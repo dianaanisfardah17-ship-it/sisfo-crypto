@@ -46,7 +46,6 @@ Aplikasi sistem informasi berbasis PHP. Landing page mengarah ke halaman admin, 
 | `logout.php` | Menghapus sesi |
 | `crypto.php` | Fungsi AES-256-GCM, RSA, dan pembungkusan kunci |
 | `config.php` | Koneksi database dan fungsi bantu |
-| `seed.php` | (Opsional) mengisi 5 data contoh. Hapus setelah dipakai |
 | `style.css` | Tampilan |
 
 ## Pemecahan Masalah
