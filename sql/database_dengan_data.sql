@@ -1,80 +1,104 @@
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: sisfo_crypto
--- ------------------------------------------------------
--- Server version	8.0.30
+-- Host: localhost:3306
+-- Generation Time: Nov 15, 2026 at 03:40 PM
+-- Server version: 8.0.30
+-- PHP Version: 8.4.24
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `sisfo_crypto`
+--
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `auth_config`
 --
 
-DROP TABLE IF EXISTS `auth_config`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `auth_config` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `pass_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `public_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `id` int NOT NULL,
+  `pass_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `public_key` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `auth_config`
 --
 
-LOCK TABLES `auth_config` WRITE;
-/*!40000 ALTER TABLE `auth_config` DISABLE KEYS */;
-INSERT INTO `auth_config` VALUES (1,'$2y$12$Ir1JhWxBlW3bdzTZm.EQPuVKth3A1CXzeQ50G9Sg4fWLvkxbh/z..','-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2gedmVKzq7j9KOrZJhWv\ncQ2zpqI37lUggaBQXTmE6BhubPe4+TvRl67cO9rl8Dt0K9dN/9BXuFUsdTyviecm\n5Jpk7fj24QPLl7Op/1HBSH5Nq9f5fbu8z0BvHLN/95aLR8q1Ek2/kwxm2766uKj2\n5dCdb16O8B3gB3UEfrxM5qGURE3BBpbLXQOrCThfOu0XQs/irBt9zccAnPpEB/68\nSjJV1asn6OuAxZ3V4A5wXutQVvD6mP9R0JbHfMb06Vc2L/1VE92Gjs/juh7nJgdV\n7rJXuhTayfZq8Ulqsnjy3xPlwkZ2jdCHSxLcZ8BpYogdZR6BbW7O9N39vtMAxKST\nNQIDAQAB\n-----END PUBLIC KEY-----\n','2026-11-15 12:42:28');
-/*!40000 ALTER TABLE `auth_config` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `auth_config` (`id`, `pass_hash`, `public_key`, `created_at`) VALUES
+(2, '$2y$12$xvKCpe/8QPtiU75vc8OmuOfFKmMDSYdjMJF.wDkuKWQCXz4bODtnO', '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmWIi46gYzWf2RQo1l0DH\nxtWzDg4gUykcW1mAsjmKpweIMz6TT/l7VDd0zr5KUOFX8qz4JnhuAo5oFpcQbccf\n2IqsD1yFolPA1uJPyf63OGfDJUxXUR2QUvE+AxpvMQW+u5dxQZu0IKILq+paWBP1\nVCW5pqh9RH0lHijS4+QIjCNtH8OiE+WfbqRxhzRuqvPFJyToA3iIfflpvH56Cu7+\nSzliPgB6hsZyJSx8UVMKY7TnjORNILU3y3BapDbkw3wVsy5B4C3RBQUk5fLLfRoU\nFEzi/SxW3h+vTdg3ZzyiGLGWjDDF2nkzVkXloG16Y1gLCgds1F00BCWm36yI4Eh6\nAQIDAQAB\n-----END PUBLIC KEY-----\n', '2026-11-15 15:36:22');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `records`
 --
 
-DROP TABLE IF EXISTS `records`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `records` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `judul_enc` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `isi_enc` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `wrapped_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `id` int NOT NULL,
+  `judul_enc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `isi_enc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `wrapped_key` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `records`
 --
 
-LOCK TABLES `records` WRITE;
-/*!40000 ALTER TABLE `records` DISABLE KEYS */;
-INSERT INTO `records` VALUES (2,'l825MtGbG3ILZeS+YnwlaB1xR8qvXTIDVKvbS8S7oD4qdViIndlYwX51+0qdBNko9yB5PKKwgzO/z0LyKpKrqvc=','hQwL8A5UrsrRzE79G32oVAH/0OxefVEeILSluGfM+vrpIzl5Vz+Zng2jqkWdx9EzrdksX0PxlyULoupdFeS6+/IzPRs=','MGPB6RdShNjq9Eq3m5gmBhw4oTPf+wnY+geAThd/AD7afWh+VybI23eBMZYrE/1N+gE0xARXKFORoBBzRsGQ6l0n7ALwuX5S6rixR7VRbXAv4EMk/TTB64IHED6FEdb1ON8b3ZteXPU6rgODfo8yawtjYJJo/wprcjtbL93TIjmKeJpBP+fhoLULMsrihooWl1rQHg3sl4eNFSuSUlKQ9EddQF+6RvVowiB1veq5SU+1rG8PEG73TkY6aXOsqx9XdFM7detLycfr/w04D79OlqvQsMG04lr7O5JnnEgxpMjLOIqsFAWa/9oAWiU7pJzrI6R2QsjbibD3sqqmdNhfPg==','2026-11-15 12:53:35'),(3,'p7jKhkz8nIBLqCJPDqnsCIGy1jmlz+dntUYL4pk5FvaQjIzsMMtAZHWeaHLKm34=','q3n1muGGAfEWwzKJuIdMEbcH+ZXdGHVmKKq4m3vpuftuhg2KnALmLWCcFP5taaYJPEWQhOKw5aM/CEsaf8zik4PAUsnMoF3QNw3pl8BBYdtUF4c0nfS0qe1R33FoJ93mBsVhAw==','sc1/5+hQbBNNzd6D4PjTakaoCP+LFbkNGzKAvcd/fVfVeDrNnH/yFSxAyxOr6Y/jW47BmYVNJrSWSHDob+YLYRndAXsUzo8ZvhSkMayKwzdaaaULIXgudn/xmAEn4qUkWZA5rOFAfv0v40xlNgKwfaYzs6+QCPM5IGtC9UNZQUH3wOjQruNqqa01Irk3jmRBcodwAtZkfwyIr1/EYSqZHVXTCbi7fUgqO72vrZaMXyHrgUDvwRINqMqf4fatmKi8vluf/vHI4X/x76hgpkqBwUKTaSIxr+Dfj04NhlvA3sBLGXALkqm7wpxXHNILKDAB43pTsljR8q/2XDTQHArTNw==','2026-11-15 12:53:35'),(4,'AvCYIWWMTqJDz5RWPzPAdyYg8syBLyAg/s4UIVszQF5utuKINzN4pzr79SNUAZ7kzXY=','dw/Qa0pGFdoSsy+eVoKkbJCxkrQ7q1rOKaaLTxmQICZBDhcLpfVqDMjPpfzh4VkKfSrlcgCayHFcnrMb49E+LMT7FYPEQHMwnkPJo5ECRRoDa1d5lQtkEPSwjIoqevnhWGqmo4OQxnlblA==','DLc+SCR7IRXbjuDiRUOj7BB+31MHQ/cNalxbK1Cozw9VvfVYoQ95DFsGhkz5AEyKCSQEFJj7tyMoZ3cv9+OaTrr5Jfi3kQ2z+IRhEtl9C7qgRtfIzOgqv8SRAWOV7ybqviVXq2oVfHRxdLw/XtWJJIWvrsLdWt8nhO7LNxavGqdmtKTJELK8mSnTeZYG1pNckQpU6xv91tfdlxKkpGRNkettyarZctUHgQTI1oEpXKjsLM5N0K4dQhNOK6YUBcKEYqqlK4xe703LkOl5MBeyxN39KqZQEf5MkhPQTzi9PC/WCXEzjAnjCCxuEbB1WQJKv2siSDfi/BiwmzlwsP37iw==','2026-11-15 12:53:35'),(5,'rY1HVkdyGmxkDIW7/mPKZWZckiqibMqixDmiRhvmUgoTxo02j6lDOr0YjFby94YnK5savA==','2fAjBgV7iBE36D8MUrxLKEGvWTFmQFXEzclEvl0MOCpX9IHSPQRDRJ3Tn6fA7oy6EjD+S5OI7HGuGjmdF5KwY4XPkEOp1QzXswA5KBosWvtWvfq/','Btwrl9yB7psQF+ghyo64jSvW8vxEuyrRLSYjsqRgKyRdmdayklFm1nvdbIqpRjJRzOc8rOn15UKNL4NcjL7/8pnr3rhbR9iuuvF+Yk8DByQgLkph1xmoo2aut9SHl6wv9ErCiEFE9prY8rUSVWAzt8vsSGC5uzcFds+9SbVqTKUeKND6e73muxJw991oSVbjNqjZ11G7Mb0pimQyXpQKifg7Gbd1Tgsee8LhwnnvvAjrnDxrMYOHgnTPkUh9HqJulCB33Wvc9xGur4qW78A3q4B8o/au9TtQGdLv9hct/PeyLiqRORhowsflhKFeWzgaLcwrfBZcyvCxNM22xmNtug==','2026-11-15 12:53:35'),(6,'71Bs8F7XqVZjbA1CQKmd3nFSExzr3RhyJjUNiuOs4TRS2hiDBUceqOIfFrYqwXywQKsmunM=','spbWi1WktnMxzndbVZRJDuBGNiW6WF6x9+mEEiqnyOe/jlqHOsixHgY5RGVgEzL4kZw/oZ59A9YTU+90kC5fNo7AeXZ3/INiFjZbyPuhAFL3lgIOCflbhTDgR6wVd3X1','BViklhvEp1W31r5q54ptBBOAiX2KgzezFPdpE+ceI3rMRWqXy5jjjphQB9oiPZTDPk7OPCMIPx74yLbdSIXgfIQ4aqTT+A4ykMrT+u3dcKoPrIvnQGelqZSqxr6Tsl+M6ZgnwkLCnUrGv4FrDw52+zE3O9APfMZRrqrOe5gWyn/4SZSqDNYsGzQC0mhu2et5Ql5ucMxuDDkayLffoQDkCUClZw5wHm+HGrXbHmeL1fvcVvVevCYxjETWoZJt6vyOKGbmSkIkCWrAEWmoIPrOcATB1lkNmwcavrr4CdUcLT3S5iyuk8bw7CS7/lgvG4UMGIQCXK7PL0yfoK3mKg4KVQ==','2026-11-15 12:53:35');
-/*!40000 ALTER TABLE `records` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+INSERT INTO `records` (`id`, `judul_enc`, `isi_enc`, `wrapped_key`, `created_at`) VALUES
+(7, 'GJgngThmSVJ5K0hw9Zy2CUP8ocjzME1x/8zpt6iG9SmPrE095gjahDbfrpqYnu4M6nWDkjc=', 'v/X78y32+xquNSQ9hc+fNQSd2sP8DiibVQGH/RXwBoBvknSbxCPKGTN6MuRZKD/Yc0VGyJBXKj5CUErColAWVUARNcmtFZybtJmDXXmK9Q260bsCP0I3LDxDe0aaaXIM/NokvmvQNjMNXrC1EuJjR0Jwjb6qYCCxolHSykHh2EUcvFfP1vR9JUTv0tH6Zcs=', 'iME6ksFIxsDGRemd93woU5bOIvFGdSLaBvRzWbrA0slkEl9AOQvXJgpVdXCqRqio0009OlPSddVjJvj0nL+0okBol4Nxk0XTI052TQmK/nKf9JdUOMHtaXyIHeU9X1gjLIRGKeDtpga2j7lk16CPOmQNAx/PLr95oDuafBysNFycXomm5rESvnKYlHBuokZ2UJAZSeEdIDyzqeMzR9waoPZ6oxU+OSyezg6LdFG2tul/0R4eQn1kCydrxvUHxg4VMYc4JvzZt6NvLwolDlmWgInZ6/r8ua2lkfwbq1e8nf0u+egD+oZt6qiHp6gU28bOTgUlcECxiITx6TY1GrUCpw==', '2026-11-15 15:39:45'),
+(8, '/UkwAgRHJ2VR9ggwEuQ7fBdPsV2lsr7P33HYKRtq6EguO3QVpHc1WDfZnxqAFgeT0O/C', 'RfyKobNIHfcq9AmiURE3Hy1z6IGzqtF6LvqRqCwVuzIah+o5+cdiN+2fbMNPXodQfUs5tOy+q+paG8qBD21FiN70yYCEwW0YfoUk5+8wObjqd1Lft1eIxVWNj2O5r1xVoL5AvJNrJNr0kNIHVM+ftToP0Iuodd/W', 'dDPOXNa96/KcNLds1zh7ogB98ygaSXNYMU6wNWBHVze6C/ocTC0Y7Wi/RKyNTAYB4Yf8hQr6uOKla/UZDGjpu5sJ2YPOeO+EqNrIKqExkW/s3hqXE4QWQBXkgkjhPeIwvT10F5lqQzomNHYE36qkx5Aj9ku2ev+cmYmeVBbT8ovjo+R4ux77/t/yUsdXGJNnOOmmDv3Pl0UOz6Z15LNpUCyRHpn4godZJvzCwi54/m0zjuSdZeAN6TOTVk3e8WgOwU/S4hG+KUWoloEkWOlvqKsYzFTtBivLZEG3KEE3NpFdk5AOBXKPmnyqLZo6h1DA400C/g93lST2oLV8+twzoQ==', '2026-11-15 15:39:45'),
+(9, 'yNWQ2AT3ZvG1N1LxP6f1Bpy1MLQCgiUrbrtH5didyErD0KpfyefCx6TZ42pAyg==', 'g/8lLIsgHqPXQiYCQtVUgmnE0TQUZ5hDDrQsWPbcnqw29qzznAKSWa+otHVTAzqX5iXEO9AiE7q/ZD+MH27feosNSDhVg2SIk1x55JcpHo4/F39k2Hu+uVUjM+bwb6o+gG+cd6+PBnnS025C', 'R7F9QLMHZZQmgAOjoPfeVI3lXI9Dv5OyEiYeU8E48iUNQwi8+cRjTKyop5GocbEBgIKm0T73YWFkeoaIyr3I3sCXw5WgqIK2m+Sq9vBRDkbFtMxCzhSU6cEhHKU1XloOK7qUBg99qgyv3Dx6ZYRb+jy4j8WF7FjrT3MtPURInh6Sd/StGcK0qrRWKkfxkM410lfsSiUOYe9rGqUfNAP3FglnopYgNKYGvjeh2HK4oyfNbjmBuURZxNO/jfPCA6noxnToN9WdgRNhQx5Be6lUk6E1aqhBKlhj3Pj4SsfSrrUBzyJVwDmlwuF7/ZrZR9kwImSVZNHDlvpkRCtGIys0oQ==', '2026-11-15 15:39:45'),
+(10, 'G2RkIKCLV0sFGlXW4p78q30L1tsJ9fl/28yEbIprUiK5Wn414D1wL0kNLVBfQygMWhVjNg0e', 'EYNk9JMAkorQfmLAvQE9bc0f1D2XPg+gg7wSEPp9OHYPFFNtMnvqH8uPhcT9lZLcOoN4xrM7x3OTnEARKkATpbKD7EuvNL/9W0YvIC9FcH6aK49vxOb/23hNi7zg+U8XKkeksuufXfChmb9R1xg=', 'jbK0r1ckKD+/VLsog1xWMhfkDKElYIK2ho7wEAQsOAHawYEiXSecFdO5oSUYNF22aZBC84BT91l2W/dH6JNCysL9JzfWSRo2jB874t+NUajyifHWcSbcQuHwVRDIdpD9OECQhgu1DZkzZ6Y0TF6ID9YNhMH8e6gUsaN67uLsyXibC3szUwc3BV1PjYDfDfuezyzGH4CvLNujOZZ5Up9M/PGO0/+Sonv+7jOVTR7XpQXmVV8EzSTjH8b6EjBo2b+UUXeMa0LJ64g8nth3rGLaxv8PShgLigwcLZeWqVQQyD4NQAYpmd8kNtWCbRadsejlLLZIaYl2QB8YwgJ4SwuQ4A==', '2026-11-15 15:39:45'),
+(11, 'bAwcD198q3pvqP2SGJ/iQh1hRrRGSmjJ5xW/CNAOWWu6E8XUKxyAiMv1Me65ow==', '8zS/Nhbs6Qf/cy46ChVdGJSlKbWgT2TxNUHdcsO3YtkLsGlIXmX/mxDLbyLavltzYODnTOOsW2MIUHBmBoFah2qpj/VP1U+bXm0wqxtiRAj8sIOSipvsROTGdtRjYLCH7L9qnm3oXu5cqEqJG8O99Qps', 'FTYwD66tqW99Hbry38CLbYiZcLo1t1CIkqgwzVR+6n0hDrw51ITOj87+1arD0aDHLTJtJqvW7K0sTzYgsYu1IsmfdlVZ5PpPfyhlTBU4UbaQIVADJvjSwT6QjBNKglRSVB1ythgG9ERJK5jsegaLymg13eMBp/zAckD8Kptrn35DqTv6a1xmna39bwLfqYuRXYNsdbTguf4Fx9gwmw3ulPB/VnY1mvkEHemrHAC/3OD8fyyKPYTsqVqeTtxmRSBfxju068ziIaOBtWGtxIvpXpz1nm0VET4sNKku4ktJQVGyIFXLRgxc2RWATU17xMumDG1EcpHOEBgtnnpyQMpolg==', '2026-11-15 15:39:45');
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `auth_config`
+--
+ALTER TABLE `auth_config`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `records`
+--
+ALTER TABLE `records`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `auth_config`
+--
+ALTER TABLE `auth_config`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `records`
+--
+ALTER TABLE `records`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2026-11-15 20:29:20
