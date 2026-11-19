@@ -1,6 +1,7 @@
 <?php
 require 'config.php'; require 'crypto.php';
 require_login();
+$full = is_full();
 $cfg = $pdo->query('SELECT public_key FROM auth_config ORDER BY id LIMIT 1')->fetch();
 $msg = ''; $err = '';
 
@@ -8,7 +9,8 @@ function short_ct($s, $n = 56) { return strlen($s) > $n ? substr($s, 0, $n) . '.
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_check();
-    if (($_POST['aksi'] ?? '') === 'tambah') {
+    if (!$full) { $err = 'Mode terbatas: tambah dan hapus data hanya bisa jika kedua kunci benar.'; }
+    elseif (($_POST['aksi'] ?? '') === 'tambah') {
         $judul = trim($_POST['judul'] ?? ''); $isi = trim($_POST['isi'] ?? '');
         if ($judul === '' || $isi === '') $err = 'Judul dan isi wajib diisi.';
         else {
@@ -35,7 +37,12 @@ $rows = $pdo->query('SELECT * FROM records ORDER BY id DESC')->fetchAll();
 </div></div>
 <div class="container">
   <h1 class="page-title">Halaman Admin</h1>
-  <p class="page-sub">Anda masuk dengan kunci simetris dan kunci asimetris yang valid.</p>
+  <p class="page-sub"><?= $full ? 'Anda masuk dengan kunci simetris dan kunci asimetris yang valid.' : 'Anda masuk, tetapi kunci belum lengkap.' ?></p>
+  <div class="keystat">
+    <span class="kbadge <?= !empty($_SESSION['pass_ok']) ? 'good' : 'bad' ?>">Kunci simetris: <?= !empty($_SESSION['pass_ok']) ? 'valid' : 'tidak valid' ?></span>
+    <span class="kbadge <?= !empty($_SESSION['key_ok']) ? 'good' : 'bad' ?>">Kunci asimetris: <?= !empty($_SESSION['key_ok']) ? 'valid' : 'tidak valid' ?></span>
+  </div>
+  <?php if (!$full): ?><div class="warn">Mode terbatas: salah satu kunci tidak valid, sehingga seluruh isi data hanya tampil sebagai <b>ciphertext</b> dan tidak bisa didekripsi. Tambah dan hapus data dinonaktifkan.</div><?php endif; ?>
   <?php if ($msg): ?><div class="ok"><?= e($msg) ?></div><?php endif; ?>
   <?php if ($err): ?><div class="err"><?= e($err) ?></div><?php endif; ?>
 
@@ -45,6 +52,7 @@ $rows = $pdo->query('SELECT * FROM records ORDER BY id DESC')->fetchAll();
     <div class="stat"><span class="stat-n sm">RSA-2048</span><span class="stat-l">Pembungkus kunci (asimetris)</span></div>
   </div>
 
+  <?php if ($full): ?>
   <div class="card">
     <h2>Tambah Data</h2>
     <p class="hint">Judul dan isi dienkripsi terlebih dahulu sebelum disimpan ke database.</p>
@@ -55,20 +63,21 @@ $rows = $pdo->query('SELECT * FROM records ORDER BY id DESC')->fetchAll();
       <button class="btn" style="margin-top:16px">Enkripsi &amp; Simpan</button>
     </form>
   </div>
+  <?php endif; ?>
 
   <div class="card">
     <h2>Seluruh Data Hasil Enkripsi</h2>
     <p class="hint">Kolom ciphertext adalah isi database. Kolom plaintext hanya tampil karena login dengan kunci yang benar.</p>
     <div class="tbl-wrap"><table>
       <tr><th>#</th><th>Judul (ciphertext)</th><th>Isi (ciphertext)</th><th>Wrapped key</th><th>Plaintext (hasil dekripsi)</th><th></th></tr>
-      <?php foreach ($rows as $r): $d = decrypt_record($r, $_SESSION['pass'], $_SESSION['priv']); ?>
+      <?php foreach ($rows as $r): $d = $full ? decrypt_record($r, $_SESSION['pass'], $_SESSION['priv']) : null; ?>
       <tr>
         <td><?= (int)$r['id'] ?></td>
         <td><code class="ct" title="<?= e($r['judul_enc']) ?>"><?= e(short_ct($r['judul_enc'])) ?></code></td>
         <td><code class="ct" title="<?= e($r['isi_enc']) ?>"><?= e(short_ct($r['isi_enc'])) ?></code></td>
         <td><code class="ct" title="<?= e($r['wrapped_key']) ?>"><?= e(short_ct($r['wrapped_key'])) ?></code></td>
-        <td><?php if ($d && $d['judul'] !== false): ?><div class="plain-cell"><b><?= e($d['judul']) ?></b><?= nl2br(e($d['isi'])) ?></div><?php else: ?><span class="fail">[gagal dekripsi]</span><?php endif; ?></td>
-        <td><form method="post" onsubmit="return confirm('Hapus data ini?')"><input type="hidden" name="csrf" value="<?= csrf_token() ?>"><input type="hidden" name="aksi" value="hapus"><input type="hidden" name="id" value="<?= (int)$r['id'] ?>"><button class="btn btn-outline-danger btn-sm">Hapus</button></form></td>
+        <td><?php if ($d && $d['judul'] !== false): ?><div class="plain-cell"><b><?= e($d['judul']) ?></b><?= nl2br(e($d['isi'])) ?></div><?php elseif (!$full): ?><span class="locked">Terkunci: kunci tidak lengkap, data hanya tampil sebagai ciphertext</span><?php else: ?><span class="fail">[gagal dekripsi]</span><?php endif; ?></td>
+        <td><?php if ($full): ?><form method="post" onsubmit="return confirm('Hapus data ini?')"><input type="hidden" name="csrf" value="<?= csrf_token() ?>"><input type="hidden" name="aksi" value="hapus"><input type="hidden" name="id" value="<?= (int)$r['id'] ?>"><button class="btn btn-outline-danger btn-sm">Hapus</button></form><?php endif; ?></td>
       </tr>
       <?php endforeach; if (!$rows): ?><tr><td colspan="6" class="empty">Belum ada data.</td></tr><?php endif; ?>
     </table></div>

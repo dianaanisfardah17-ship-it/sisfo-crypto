@@ -29,8 +29,8 @@ Aplikasi sistem informasi berbasis PHP. Landing page mengarah ke halaman admin, 
 ## Cara Penggunaan
 1. Di landing page, klik **Masuk Halaman Admin**.
 2. **Setup kunci (sekali saja).** Isi passphrase (minimal 8 karakter), klik **Generate Kunci**, lalu **unduh `private_key.pem`**. Private key hanya ditampilkan sekali dan tidak disimpan di server.
-3. **Login.** Isi passphrase (kunci simetris) dan unggah `private_key.pem` (kunci asimetris), atau tempel isinya. Login berhasil hanya jika **kedua kunci benar**.
-4. **Halaman admin.** Tambah data lewat form (dienkripsi sebelum disimpan). Tabel menampilkan ciphertext judul, ciphertext isi, wrapped key, dan plaintext hasil dekripsi.
+3. **Login.** Isi passphrase (kunci simetris) dan unggah `private_key.pem` (kunci asimetris), atau tempel isinya. Login berhasil jika **salah satu kunci benar**. Namun isi data hanya terbuka jika **kedua kunci benar**. Jika salah satu kunci salah, halaman admin tetap bisa dibuka dalam **mode terbatas**: seluruh isi data tampil sebagai ciphertext, dan tambah/hapus data dinonaktifkan. Jika kedua kunci salah, login ditolak.
+4. **Halaman admin.** Tambah data lewat form (dienkripsi sebelum disimpan). Tabel menampilkan ciphertext judul, ciphertext isi, wrapped key, dan plaintext hasil dekripsi (hanya jika kedua kunci benar).
 
 ## Database
 - `sql/database.sql`: struktur kosong (tabel `auth_config` dan `records`).
@@ -41,11 +41,12 @@ Aplikasi sistem informasi berbasis PHP. Landing page mengarah ke halaman admin, 
 |---|---|
 | `index.php` | Landing page |
 | `setup.php` | Setup kunci pertama kali (generate RSA) |
-| `login.php` | Login dengan kunci simetris dan asimetris |
+| `login.php` | Login dengan kunci simetris dan/atau asimetris (cukup salah satu benar untuk masuk) |
 | `admin.php` | Halaman admin: tambah, lihat, dan hapus data terenkripsi |
 | `logout.php` | Menghapus sesi |
 | `crypto.php` | Fungsi AES-256-GCM, RSA, dan pembungkusan kunci |
 | `config.php` | Koneksi database dan fungsi bantu |
+| `seed.php` | (Opsional) mengisi 5 data contoh. Hapus setelah dipakai |
 | `style.css` | Tampilan |
 
 ## Pemecahan Masalah

@@ -30,5 +30,7 @@ function is_configured($pdo) {
     return (int)$pdo->query('SELECT COUNT(*) FROM auth_config')->fetchColumn() > 0;
 }
 function require_login() {
-    if (empty($_SESSION['pass']) || empty($_SESSION['priv'])) { header('Location: login.php'); exit; }
+    if (empty($_SESSION['auth'])) { header('Location: login.php'); exit; }
 }
+// true hanya jika kunci simetris DAN asimetris sama-sama benar
+function is_full() { return !empty($_SESSION['full']); }
