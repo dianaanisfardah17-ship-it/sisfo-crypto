@@ -29,7 +29,7 @@ Aplikasi sistem informasi berbasis PHP. Landing page mengarah ke halaman admin, 
 ## Cara Penggunaan
 1. Di landing page, klik **Masuk Halaman Admin**.
 2. **Setup kunci (sekali saja).** Isi passphrase (minimal 8 karakter), klik **Generate Kunci**, lalu **unduh `private_key.pem`**. Private key hanya ditampilkan sekali dan tidak disimpan di server.
-3. **Login.** Isi passphrase (kunci simetris) dan unggah `private_key.pem` (kunci asimetris), atau tempel isinya. Login berhasil jika **salah satu kunci benar**. Namun isi data hanya terbuka jika **kedua kunci benar**. Jika salah satu kunci salah, halaman admin tetap bisa dibuka dalam **mode terbatas**: seluruh isi data tampil sebagai ciphertext, dan tambah/hapus data dinonaktifkan. Jika kedua kunci salah, login ditolak.
+3. **Login.** Isi passphrase (kunci simetris) dan unggah `private_key.pem` (kunci asimetris), atau tempel isinya. Login berhasil jika **salah satu kunci benar**. Namun isi data hanya terbuka jika **kedua kunci benar**. Jika salah satu kunci salah, halaman admin tetap terbuka dalam **mode terbatas**: **seluruh teks di halaman** (judul, label, angka, dan isi data) tampil sebagai ciphertext sehingga tidak ada yang terbaca, dan tambah/hapus data dinonaktifkan. Jika kedua kunci salah, login ditolak.
 4. **Halaman admin.** Tambah data lewat form (dienkripsi sebelum disimpan). Tabel menampilkan ciphertext judul, ciphertext isi, wrapped key, dan plaintext hasil dekripsi (hanya jika kedua kunci benar).
 
 ## Database

@@ -2,6 +2,27 @@
 require 'config.php'; require 'crypto.php';
 require_login();
 $full = is_full();
+
+// Mode terbatas: SELURUH teks halaman diubah menjadi ciphertext (tidak ada yang terbaca).
+// Tiap teks dienkripsi AES-256-GCM dengan kunci acak sekali pakai yang langsung dibuang.
+// Kolom ciphertext asli dari database (code.ct) dibiarkan apa adanya.
+function cipher_page($html) {
+    $out = ''; $keep = false; $skip = false;
+    foreach (preg_split('/(<[^>]+>)/', $html, -1, PREG_SPLIT_DELIM_CAPTURE) as $tok) {
+        if ($tok !== '' && $tok[0] === '<') {
+            if (preg_match('/^<code[^>]*class="ct"/i', $tok)) $keep = true;
+            elseif (preg_match('/^<\/code>/i', $tok)) $keep = false;
+            elseif (preg_match('/^<(style|script)\b/i', $tok)) $skip = true;
+            elseif (preg_match('/^<\/(style|script)>/i', $tok)) $skip = false;
+            if (stripos($tok, '<body') === 0) $tok = '<body class="cipher">';
+            $out .= $tok; continue;
+        }
+        if ($keep || $skip || trim($tok) === '') { $out .= $tok; continue; }
+        $out .= substr(aes_encrypt(trim(html_entity_decode($tok)), random_bytes(32)), 0, 64);
+    }
+    return $out;
+}
+if (!$full) ob_start('cipher_page');
 $cfg = $pdo->query('SELECT public_key FROM auth_config ORDER BY id LIMIT 1')->fetch();
 $msg = ''; $err = '';
 
@@ -38,11 +59,12 @@ $rows = $pdo->query('SELECT * FROM records ORDER BY id DESC')->fetchAll();
 <div class="container">
   <h1 class="page-title">Halaman Admin</h1>
   <p class="page-sub"><?= $full ? 'Anda masuk dengan kunci simetris dan kunci asimetris yang valid.' : 'Anda masuk, tetapi kunci belum lengkap.' ?></p>
+  <?php if ($full): ?>
   <div class="keystat">
-    <span class="kbadge <?= !empty($_SESSION['pass_ok']) ? 'good' : 'bad' ?>">Kunci simetris: <?= !empty($_SESSION['pass_ok']) ? 'valid' : 'tidak valid' ?></span>
-    <span class="kbadge <?= !empty($_SESSION['key_ok']) ? 'good' : 'bad' ?>">Kunci asimetris: <?= !empty($_SESSION['key_ok']) ? 'valid' : 'tidak valid' ?></span>
+    <span class="kbadge good">Kunci simetris: valid</span>
+    <span class="kbadge good">Kunci asimetris: valid</span>
   </div>
-  <?php if (!$full): ?><div class="warn">Mode terbatas: salah satu kunci tidak valid, sehingga seluruh isi data hanya tampil sebagai <b>ciphertext</b> dan tidak bisa didekripsi. Tambah dan hapus data dinonaktifkan.</div><?php endif; ?>
+  <?php endif; ?>
   <?php if ($msg): ?><div class="ok"><?= e($msg) ?></div><?php endif; ?>
   <?php if ($err): ?><div class="err"><?= e($err) ?></div><?php endif; ?>
 
